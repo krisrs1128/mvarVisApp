@@ -15,11 +15,13 @@ shinyUI(fluidPage(
       selectInput("method", "Method", c("factominer_pca", "acm",
                                         "coa", "fpca", "pco", "CA", "isomap",
                                         "hillsmith", "decorana", "ade4_pca", "metaMDS")),
-      uiOutput("point_types")
+      width = 2
     ),
     mainPanel(
       mvarVisOutput("plot"),
-      textOutput("n_tables")
+      id = "main-panel"
     )
-  )
+  ),
+  HTML("<input type='text' id = 'panelWidth' name='panelWidth' style='display: none;'>"),
+  includeScript("panelWidth.js")
 ))

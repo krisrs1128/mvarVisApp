@@ -6,7 +6,8 @@
 library("shiny")
 library("mvarVis")
 
-shinyServer(function(input, output) {
+shinyServer(function(input, output, session) {
+
   # upload-data
   data_fun <- reactive({
     cur_path <- input$quanti_data$datapath
@@ -43,27 +44,14 @@ shinyServer(function(input, output) {
   n_tables <- reactive({
     length(ordi_fun()@table)
   })
-
-  # for each table, user can select type of point
-  output$point_types <- renderUI({
-    point_types <- list()
-    for(i in seq_len(n_tables())) {
-      point_types[[i]] <- selectInput(paste0("type_select_", i),
-                                      paste0("Type Select ", i),
-                                      choices = c("point", "text", "arrow"))
-    }
-    do.call(tagList, point_types)
-  })
-
   output$n_tables <- reactive({n_tables()})
 
-  # get the types of points user has selected
-  cur_types <- reactive({
-    sapply(1:n_tables(), function(i) {
-      input[[paste0("type_select_", i)]]
-    })
+  # what is the width (in pixels) of the plot container?
+  panelWidth <- reactive( {
+    input$panelWidth
   })
+
   output$plot <- renderMvarVis(
-    plot_mvar_d3(ordi_fun(), types = cur_types())
+    plot_mvar_d3(ordi_fun(), width = as.numeric(panelWidth()))
   )
 })
