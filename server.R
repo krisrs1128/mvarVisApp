@@ -11,6 +11,9 @@ shinyServer(function(input, output, session) {
   # upload-data
   data_fun <- reactive({
     cur_path <- input$quanti_data$datapath
+    if(is.null(cur_path)) {
+      cur_path <- "data/decathlon_quanti.csv"
+    }
     cur_data <- read.csv(cur_path)
     res <- as.matrix(cur_data[, -1])
     rownames(res) <- cur_data[, 1]
@@ -20,7 +23,7 @@ shinyServer(function(input, output, session) {
   supp_data_fun <- reactive({
     cur_path <- input$supp_data$datapath
     if(is.null(cur_path)) {
-      return (NULL)
+      cur_path <- "data/decathlon_supp.csv"
     }
     cur_data <- read.csv(cur_path)
     res <- as.matrix(cur_data[, -1])
