@@ -5,6 +5,7 @@
 
 library("shiny")
 library("mvarVis")
+library("FactoMineR")
 
 shinyServer(function(input, output, session) {
 
